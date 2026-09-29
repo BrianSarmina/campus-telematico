@@ -1,0 +1,43 @@
+# =====================================================================
+#  Telematica - FES Cuautitlan UNAM
+#  Dependencias Python del proyecto Campus Telematico
+#  Instalar:  python -m venv .venv && source .venv/bin/activate
+#             pip install -r requirements.txt
+# =====================================================================
+
+# --- Nucleo (todas las practicas) ---
+paho-mqtt>=2.1
+pyserial>=3.5
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+requests>=2.31
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8
+pyyaml>=6.0
+
+# --- Protocolos y red ---
+aiocoap>=0.4.7
+websockets>=12.0
+pyshark>=0.6
+scapy>=2.5
+psutil>=5.9
+
+# --- Simulacion, medicion y operacion ---
+simpy>=4.1
+locust>=2.24
+prometheus-client>=0.20
+influxdb-client>=1.41
+
+# --- Aplicacion y vision ---
+opencv-python>=4.9
+streamlit>=1.33
+plotly>=5.20
+
+# --- Herramientas de desarrollo ---
+esptool>=4.7
+mpremote>=1.22
+pytest>=8.1
+httpx>=0.27
+jsonschema>=4.21

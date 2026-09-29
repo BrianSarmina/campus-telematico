@@ -1,0 +1,71 @@
+# =====================================================================
+#  Infraestructura del Campus Telematico - MODULO 1
+#
+#  Levantar : docker compose up -d
+#  Estado   : docker compose ps
+#  Bitacora : docker compose logs -f mosquitto
+#  Detener  : docker compose down          (conserva los datos)
+#  Borrar   : docker compose down -v       (elimina los volumenes)
+#
+#  En el Modulo 3 se agregan Prometheus y el listener TLS del broker.
+# =====================================================================
+services:
+
+  # ------------------------------------------------------------------
+  #  Broker MQTT. Es el corazon del sistema: todo lo demas se conecta
+  #  aqui. Puerto 1883 sin cifrar (se asegura en el Modulo 3).
+  # ------------------------------------------------------------------
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: campus-mosquitto
+    ports:
+      - "1883:1883"     # MQTT
+      - "9001:9001"     # MQTT sobre WebSocket
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - mosquitto-data:/mosquitto/data
+    restart: unless-stopped
+
+  # ------------------------------------------------------------------
+  #  Base de datos de series de tiempo. En el Modulo 1 solo se deja
+  #  lista; se usa a fondo a partir del Modulo 3.
+  #  Interfaz web: http://localhost:8086
+  # ------------------------------------------------------------------
+  influxdb:
+    image: influxdb:2.7
+    container_name: campus-influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: telematica2026
+      DOCKER_INFLUXDB_INIT_ORG: fesc
+      DOCKER_INFLUXDB_INIT_BUCKET: campus
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: token-de-clase-cambiar
+    volumes:
+      - influx-data:/var/lib/influxdb2
+    restart: unless-stopped
+
+  # ------------------------------------------------------------------
+  #  Tableros. Usuario admin / contrasena telematica2026
+  #  Interfaz web: http://localhost:3000
+  # ------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana-oss:10.4.0
+    container_name: campus-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: telematica2026
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - influxdb
+    restart: unless-stopped
+
+volumes:
+  mosquitto-data:
+  influx-data:
+  grafana-data:
