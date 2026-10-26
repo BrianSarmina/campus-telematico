@@ -1,0 +1,12 @@
+# =====================================================================
+#  Telematica - FES Cuautitlan UNAM - Modulo 3 (Practicas 9 y 10)
+#  Lo que el Modulo 3 agrega o usa. El resto del sistema (API, consola,
+#  pruebas de contrato) sigue con Modulo_2/codigo/requirements.txt.
+#
+#  pip install -r requirements.txt
+# =====================================================================
+paho-mqtt>=2.1        # medir_enlace.py, puente serie
+pyserial>=3.5         # bitacora del nodo, escaner, puente serie
+matplotlib>=3.8       # graficas de colisiones y de espectro
+pytest>=8.1           # pruebas_modulo3.py
+mpremote>=1.22        # copiar firmware a los ESP32

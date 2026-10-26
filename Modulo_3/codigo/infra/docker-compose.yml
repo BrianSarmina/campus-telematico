@@ -1,0 +1,29 @@
+# =====================================================================
+#  Infraestructura del Campus Telematico - MODULO 3
+#
+#  Solo el broker. El proyecto guarda en SQLite y muestra en Streamlit
+#  (Modulo 2, v2.1): InfluxDB y Grafana ya no se usan. El compose del
+#  Modulo 2 todavia los levanta; este los quita.
+#
+#  Levantar : docker compose up -d
+#  Estado   : docker compose ps
+#  Bitacora : docker compose logs -f mosquitto
+#  Detener  : docker compose down          (conserva los datos)
+#
+#  La Practica 11 cambia mosquitto/config/mosquitto.conf (persistencia de
+#  sesiones). Las Practicas 9 y 10 lo usan tal cual.
+# =====================================================================
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: campus-mosquitto
+    ports:
+      - "1883:1883"     # MQTT
+      - "9001:9001"     # MQTT sobre WebSocket
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - mosquitto-data:/mosquitto/data
+    restart: unless-stopped
+
+volumes:
+  mosquitto-data:
